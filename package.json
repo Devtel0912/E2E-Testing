@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Devtel0912/E2E-Testing#readme",
   "devDependencies": {
-    "cypress": "^16.2.0"
+    "cypress": "^16.2.0",
+    "http-server": "^14.1.1"
   }
 }

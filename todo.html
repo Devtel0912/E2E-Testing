@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f4f6f8;
+    }
+
+    h1 { text-align: center; }
+
+    form {
+      display: flex;
+      gap: 8px;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px;
+    }
+
+    button {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0;
+      padding: 12px;
+      background: white;
+    }
+
+    li span { flex: 1; }
+    li.completed span {
+      text-decoration: line-through;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Todo List</h1>
+
+  <form id="todo-form">
+    <input
+      id="todo-input"
+      data-testid="todo-input"
+      placeholder="Enter a task"
+      aria-label="Enter a task"
+      required
+    >
+    <button type="submit">Add Task</button>
+  </form>
+
+  <p>Tasks: <span data-testid="task-count">0</span></p>
+  <ul id="todo-list" data-testid="todo-list"></ul>
+
+  <script>
+    const form = document.querySelector('#todo-form');
+    const input = document.querySelector('#todo-input');
+    const list = document.querySelector('#todo-list');
+    const count = document.querySelector('[data-testid="task-count"]');
+
+    function updateCount() {
+      count.textContent = list.children.length;
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const task = input.value.trim();
+      if (!task) return;
+
+      const item = document.createElement('li');
+      const checkbox = document.createElement('input');
+      const text = document.createElement('span');
+      const removeButton = document.createElement('button');
+
+      checkbox.type = 'checkbox';
+      checkbox.setAttribute('aria-label', `Complete ${task}`);
+
+      text.textContent = task;
+
+      removeButton.textContent = 'Delete';
+      removeButton.setAttribute('aria-label', `Delete ${task}`);
+
+      checkbox.addEventListener('change', () => {
+        item.classList.toggle('completed', checkbox.checked);
+      });
+
+      removeButton.addEventListener('click', () => {
+        item.remove();
+        updateCount();
+      });
+
+      item.append(checkbox, text, removeButton);
+      list.appendChild(item);
+
+      input.value = '';
+      updateCount();
+    });
+  </script>
+</body>
+</html>
